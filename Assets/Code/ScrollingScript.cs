@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using SunKang;
 
 public class ScrollingScript : MonoBehaviour {
 
@@ -42,5 +44,25 @@ public class ScrollingScript : MonoBehaviour {
 
         if (isLinkedToCamera)
             Camera.main.transform.Translate(movement);
+
+        if(isLooping) {
+            SpriteRenderer firstChild = backgroundPart.FirstOrDefault();
+
+            if(firstChild != null) {
+                if(firstChild.transform.position.x < Camera.main.transform.position.x) {
+                    if(!firstChild.IsVisibleFrom(Camera.main)) {
+                        SpriteRenderer lastChild = backgroundPart.LastOrDefault();
+                        Vector3 lastPostion = lastChild.transform.position;
+                        Vector3 lastSize = (lastChild.bounds.max - lastChild.bounds.min);
+
+                        firstChild.transform.position = new Vector3(lastPostion.x+lastSize.x,firstChild.transform.position.y,firstChild.transform.position.z);
+
+                        backgroundPart.Remove(firstChild);
+                        backgroundPart.Add(firstChild);
+                    }
+                }
+            }
+
+        }
     }
 }
