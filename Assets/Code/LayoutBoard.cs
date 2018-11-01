@@ -4,28 +4,36 @@ using UnityEngine;
 
 public class LayoutBoard : MonoBehaviour {
 
-    private Transform _transfrom;
+    public GameObject gameObject;
 
-    public Vector2 size = new Vector2(10, 20);
-    public int widNum = 11;
+    private Vector2 size = new Vector2((float)0.75, (float)0.75);
+    public int widNum = 10;
     public int lenNum = 6;
+
+    private void DrawRect(Vector2 pos) {
+        Debug.DrawLine(new Vector3(pos.x, pos.y, gameObject.transform.position.z), new Vector3(pos.x, pos.y + size.y, gameObject.transform.position.z), new Color(1, 0, 0));
+        Debug.DrawLine(new Vector3(pos.x, pos.y + size.y, gameObject.transform.position.z), new Vector3(pos.x + size.x, pos.y + size.y, gameObject.transform.position.z), new Color(1, 0, 0));
+        Debug.DrawLine(new Vector3(pos.x + size.x, pos.y + size.y, gameObject.transform.position.z), new Vector3(pos.x + size.x, pos.y, gameObject.transform.position.z), new Color(1, 0, 0));
+        Debug.DrawLine(new Vector3(pos.x + size.x, pos.y, gameObject.transform.position.z), new Vector3(pos.x, pos.y, gameObject.transform.position.z), new Color(1, 0, 0));
+    }
 
     // Use this for initialization
     void Start() {
-        
-    }
+        GameObject fightAreaObject = GameObject.Find("FightArea");
+        Vector3 fightAreaSize = fightAreaObject.GetComponent<SpriteRenderer>().sprite.bounds.size;
 
-    private void OnDrawGizmos() {
-        for (int i = 0; i < lenNum; i++) {
-            Gizmos.DrawLine(new Vector3(0, i * size.y, 0), new Vector3((widNum - 1) * size.x, i * size.y, 0));
-        }
-        for (int i = 0; i < widNum; i++) {
-            Gizmos.DrawLine(new Vector3(i * size.x, 0, 0), new Vector3(i * size.x, (lenNum - 1) * size.y, 0));
+        if (fightAreaSize.x > 0 && fightAreaSize.y > 0) {
+            Vector3 scale = new Vector3(size.x * widNum / fightAreaSize.x, size.y * lenNum / fightAreaSize.y, 1);
+            fightAreaObject.transform.localScale = scale;
         }
     }
 
     // Update is called once per frame
     void Update() {
-
+        for (int i = 0; i < widNum; i++) {
+            for (int j = 0; j < lenNum; j++) {
+                DrawRect(new Vector2(i * size.x + gameObject.transform.position.x, j * size.y + gameObject.transform.position.y));
+            }
+        }
     }
 }
