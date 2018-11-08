@@ -41,6 +41,7 @@ namespace Sunkang {
             for (int i = 0; i < x; i++) {
                 for (int j = 0; j < y; j++) {
                     grids[i, j] = new Grid(size);
+                    Debug.Log(size.x + "   " + size.y);
                 }
             }
         }
@@ -53,19 +54,29 @@ namespace Sunkang {
 
             return grid.isHas;
         }
+
+        public Vector2 GetGrid(Vector2 pos) {
+            Vector2 grid = new Vector2();
+            Vector2 size = grids[0,0].size;
+            grid.x = pos.y/size.y;
+            grid.y = pos.x/size.x;
+            
+            return grid;
+        }
     }
 
     public class mapManager {
         Dictionary<int, map> maps = new Dictionary<int, map>();
-        public static mapManager instance {
+        private static mapManager instance;
+        public static mapManager Instance {
             get {
                 if (instance == null) {
-                    mapManager instance = new mapManager();
+                    instance = new mapManager();
                 }
                 return instance;
             }
         }
-        public map GetMapBuId(int mapId) {
+        public map GetMapById(int mapId) {
             map m = maps[mapId];
             return m;
         }
@@ -75,8 +86,8 @@ namespace Sunkang {
         }
 
         public void AddMap(int mapId, map m) {
-            map m1 = maps[mapId];
-            if (m1 != null) {
+            bool isExist = maps.ContainsKey(mapId);
+            if (isExist) {
                 return;
             }
             m.id = mapId;

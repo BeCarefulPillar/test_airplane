@@ -16,6 +16,5 @@ public class plan1 : button {
         fatherTrans = GameObject.Find("Attack").transform;
         myPrefab = ((GameObject)Resources.Load(prefabPaht + prefabName)).transform;
         myObj = Instantiate(myPrefab, fatherTrans).gameObject;
-        Debug.LogError("plan1");
     }
 }
