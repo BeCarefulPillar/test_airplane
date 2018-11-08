@@ -2,29 +2,87 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
 namespace Sunkang {
-    class Grid {
-        Vector2 postion;
-        bool isHas;
-        Grid() {
-            postion = new Vector2((float)0.75, (float)0.75);
+    public class Grid {
+        public Vector2 size;
+        public bool isHas;
+
+        public Grid() {
+            size = new Vector2((float)0.75, (float)0.75);
+            isHas = false;
+        }
+        public Grid(Vector2 size) {
+            this.size = size;
             isHas = false;
         }
     }
 
     public class map {
-        private Grid[,] grids = new Grid[6, 10];
-
-
-        // Use this for initialization
-        void Start() {
-
+        public Grid[,] grids;
+        public int id { set; get; }
+        public map() {
+            grids = new Grid[6, 10];
+            for (int i = 0; i < 6; i++) {
+                for (int j = 0; j < 10; j++) {
+                    grids[i, j] = new Grid();
+                }
+            }
+        }
+        public map(Vector2 size) {
+            grids = new Grid[6, 10];
+            for (int i = 0; i < 6; i++) {
+                for (int j = 0; j < 10; j++) {
+                    grids[i, j] = new Grid(size);
+                }
+            }
+        }
+        public map(int x, int y, Vector2 size) {
+            grids = new Grid[x, y];
+            for (int i = 0; i < x; i++) {
+                for (int j = 0; j < y; j++) {
+                    grids[i, j] = new Grid(size);
+                }
+            }
         }
 
-        // Update is called once per frame
-        void Update() {
+        public bool GetMapStatus(int x, int y) {
+            Grid grid = grids[x - 1, y - 1];
+            if (grid == null) {
+                return false;
+            }
 
+            return grid.isHas;
         }
+    }
+
+    public class mapManager {
+        Dictionary<int, map> maps = new Dictionary<int, map>();
+        public static mapManager instance {
+            get {
+                if (instance == null) {
+                    mapManager instance = new mapManager();
+                }
+                return instance;
+            }
+        }
+        public map GetMapBuId(int mapId) {
+            map m = maps[mapId];
+            return m;
+        }
+
+        public int GetNowMapCount() {
+            return maps.Count;
+        }
+
+        public void AddMap(int mapId, map m) {
+            map m1 = maps[mapId];
+            if (m1 != null) {
+                return;
+            }
+            m.id = mapId;
+            maps.Add(mapId, m);
+        }
+
+
     }
 }
