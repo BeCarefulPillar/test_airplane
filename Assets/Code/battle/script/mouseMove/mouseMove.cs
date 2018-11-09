@@ -11,7 +11,7 @@ public class mouseMove : MonoBehaviour {
     private Sunkang.map map;
 
     public GameObject obj;
-    public string prefabName = "SunFlower";
+    public string prefabName = "sunFlower/SunFlower";
     public int mapId = 1;
     // Use this for initialization
     void Start() {
@@ -23,7 +23,7 @@ public class mouseMove : MonoBehaviour {
         obj.SetActive(false);
 
         Sunkang.mapManager maps = Sunkang.mapManager.Instance;
-        map = maps.GetMapById(1);
+        map = maps.GetMapById(mapId);
     }
 
     // Update is called once per frame
