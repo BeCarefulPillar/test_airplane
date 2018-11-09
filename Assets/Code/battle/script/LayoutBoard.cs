@@ -9,7 +9,7 @@ public class LayoutBoard : MonoBehaviour {
     public const int lenNum = 6;
 
     private Vector2 size;
-    private Sunkang.map m_map;
+    private SunKang.map m_map;
     private Vector3 fightAreaSize;
 
     private void DrawRect(Vector2 pos) {
@@ -27,9 +27,9 @@ public class LayoutBoard : MonoBehaviour {
         //初始化地图
         size = new Vector2(fightAreaSize.x / widNum, fightAreaSize.y / lenNum);
         Debug.Log(size.x + "   " + size.y);
-        m_map = new Sunkang.map(lenNum, widNum, size);
+        m_map = new SunKang.map(lenNum, widNum, size);
 
-        Sunkang.mapManager maps = Sunkang.mapManager.Instance;
+        SunKang.mapManager maps = SunKang.mapManager.Instance;
         int count = maps.GetNowMapCount();
         maps.AddMap(count + 1, m_map);
 

@@ -8,7 +8,7 @@ public class mouseMove : MonoBehaviour {
     private string prefabPaht = "Prefabs/";
     private Transform myPrefab;
     private Vector3 fightAreaSize;
-    private Sunkang.map map;
+    private SunKang.map map;
 
     public GameObject obj;
     public string prefabName = "sunFlower/SunFlower";
@@ -22,7 +22,7 @@ public class mouseMove : MonoBehaviour {
         obj = Instantiate(obj, fatherTrans);
         obj.SetActive(false);
 
-        Sunkang.mapManager maps = Sunkang.mapManager.Instance;
+        SunKang.mapManager maps = SunKang.mapManager.Instance;
         map = maps.GetMapById(mapId);
     }
 

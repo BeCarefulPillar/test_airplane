@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Sunkang {
+namespace SunKang {
     public class Grid {
         public Vector2 size;
         public bool isHas;
