@@ -8,7 +8,6 @@ public class mouseMove : MonoBehaviour {
     private string prefabPaht = "Prefabs/";
     private Transform myPrefab;
     private Vector3 fightAreaSize;
-    private Vector3 objAreaSize;
     private Sunkang.map map;
 
     public GameObject obj;
@@ -19,9 +18,8 @@ public class mouseMove : MonoBehaviour {
         fatherTrans = GameObject.Find("FightArea").transform;
         myPrefab = ((GameObject)Resources.Load(prefabPaht + prefabName)).transform;
         fightAreaSize = fatherTrans.GetComponent<SpriteRenderer>().sprite.bounds.size;
-        
-        objAreaSize = obj.transform.GetComponent<SpriteRenderer>().sprite.bounds.size;
-        Instantiate(obj, obj.transform.position, obj.transform.rotation, fatherTrans);
+
+        obj = Instantiate(obj, fatherTrans);
         obj.SetActive(false);
 
         Sunkang.mapManager maps = Sunkang.mapManager.Instance;
@@ -38,25 +36,31 @@ public class mouseMove : MonoBehaviour {
 
         Vector2 pos2d = new Vector2(targetPosition.x + fightAreaSize.x / 2, targetPosition.y + fightAreaSize.y / 2);
         Vector2 grid = map.GetGrid(pos2d);
-        
-        Debug.Log("++++++++" + grid.x + "  " + grid.y);
+
         if (grid.x >= 0 && grid.y >= 0 && grid.x < map.grids.GetLength(0) && grid.y < map.grids.GetLength(1)) {
             int x = (int)grid.x;
             int y = (int)grid.y;
             obj.SetActive(true);
-            obj.transform.position = new Vector3(grid.x * map.grids[x,y].size.x + objAreaSize.x/2 , 
-                grid.y * map.grids[x,y].size.y + objAreaSize.y/2 , 
+            obj.transform.position = new Vector3(y * map.grids[x, y].size.x + map.grids[x, y].size.x / 2 - fightAreaSize.x / 2,
+                x * map.grids[x, y].size.y + map.grids[x, y].size.y / 2 - fightAreaSize.y / 2,
                 obj.transform.position.z);
+            if (Input.GetMouseButtonUp(0)) {
+                if (!map.grids[x, y].isHas) {
+                    Instantiate(myPrefab, obj.transform.position, myPrefab.rotation, fatherTrans);
+                    map.grids[x, y].isHas = true;
+                }
+                Destroy(obj);
+                Destroy(gameObject);
+            }
+        } else {
+            obj.SetActive(false);
+            if (Input.GetMouseButtonUp(0)) {
+                Destroy(obj);
+                Destroy(gameObject);
+            }
+
         }
-        else {
-             obj.SetActive(false);
-        }
-        
-        if (Input.GetMouseButtonUp(0)) {
-            Instantiate(myPrefab, myPrefab.position, myPrefab.rotation, fatherTrans);
-            Destroy(obj);
-            Destroy(gameObject);
-        }
+
     }
 
 
