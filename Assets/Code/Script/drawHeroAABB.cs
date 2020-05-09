@@ -5,6 +5,7 @@ public class DrawHeroAABB: MonoBehaviour{
     public Color color = Color.red;
 
     private void Start() {
+
     }
 
     void OnDrawGizmos() {
